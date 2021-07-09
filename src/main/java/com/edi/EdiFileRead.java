@@ -7,12 +7,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 
+import com.edi.utils.SplitUtil;
 import com.edi.vo.SrHeaderVo;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class EdiFileRead {
+	 
      static HashMap<Integer,String> locTag = new HashMap<Integer,String>(); static int locTagCnt = 0;
      static HashMap<Integer,String> pciTag = new HashMap<Integer,String>(); static int pciTagCnt = 0;
      static HashMap<Integer,String> rffTag = new HashMap<Integer,String>(); static int rffTagCnt = 0;
@@ -32,8 +34,6 @@ public class EdiFileRead {
 			log.info(srHeaderVo.getPOL()+"----------------------------<<<< 들어옴");
 			log.info("----------------------------");
 
-		
-		
 		}catch(Exception e) {
 			log.info("file not found");
 		}
@@ -79,22 +79,31 @@ public class EdiFileRead {
     }
 
     private static void printHahMapDateAll() {
-        
-        for(Integer rffRow : rffTag.keySet()){ //저장된 key값 확인
-            log.info("[Key]:" + rffRow + " [Value]:" + rffTag.get(rffRow));
+    	SplitUtil check = new SplitUtil();
+    	String POD = "";
+    	String POL = "";
+        for(Integer Row : rffTag.keySet()){ //저장된 key값 확인
+            log.info("[Key]:" + Row + " [Value]:" + rffTag.get(Row));
         }
         
-        for(Integer pciRow : pciTag.keySet()){ //저장된 key값 확인
-        	log.info("[Key]:" + pciRow + " [Value]:" + pciTag.get(pciRow));
+        for(Integer Row : pciTag.keySet()){ //저장된 key값 확인
+        	log.info("[Key]:" + Row + " [Value]:" + pciTag.get(Row));
         }
         
-        for(Integer locRow : locTag.keySet()){ //저장된 key값 확인
-        	log.info("[Key]:" + locRow + " [Value]:" + locTag.get(locRow));
+        for(Integer Row : locTag.keySet()){ //저장된 key값 확인
+        	log.info("[Key]:" + Row + " [Value]:" + locTag.get(Row));
+            log.info(check.searcLeftPlusData(locTag.get(Row),2));
+            if(check.searcLeftPlusData(locTag.get(Row),2).equals("7")) {
+            	POD = locTag.get(Row);
+            }
+            if(check.searcLeftPlusData(locTag.get(Row),2).equals("88")) {
+            	POL = locTag.get(Row);
+            }
 
         }
         
-        srHeaderVo = SrHeaderVo.builder().POD(pciTag.get(0))
-        							     .POL(locTag.get(1)).build();
+        srHeaderVo = SrHeaderVo.builder().POD(POD)
+        							     .POL(POL).build();
 		
 
     }
