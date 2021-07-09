@@ -18,7 +18,9 @@ public class EdiFileRead {
      static HashMap<Integer,String> locTag = new HashMap<Integer,String>(); static int locTagCnt = 0;
      static HashMap<Integer,String> pciTag = new HashMap<Integer,String>(); static int pciTagCnt = 0;
      static HashMap<Integer,String> rffTag = new HashMap<Integer,String>(); static int rffTagCnt = 0;
-
+     static String POD = "";
+ 	 static String POL = "";
+ 	 static SplitUtil check = new SplitUtil();
 
     static SrHeaderVo srHeaderVo = new SrHeaderVo();
 	public void IftMinConvertToSrDb() {
@@ -68,28 +70,7 @@ public class EdiFileRead {
     		locTag.put(locTagCnt,rowLine);
     		locTagCnt++;
     }
-    private static void addRffTag(String rowLine) {
-		    rffTag.put(rffTagCnt,rowLine);
-		    rffTagCnt++;
-}
-    
-    private static void addPciTag(String rowLine) {
-    		pciTag.put(pciTagCnt,rowLine);
-    		pciTagCnt++;
-    }
-
-    private static void printHahMapDateAll() {
-    	SplitUtil check = new SplitUtil();
-    	String POD = "";
-    	String POL = "";
-        for(Integer Row : rffTag.keySet()){ //저장된 key값 확인
-            log.info("[Key]:" + Row + " [Value]:" + rffTag.get(Row));
-        }
-        
-        for(Integer Row : pciTag.keySet()){ //저장된 key값 확인
-        	log.info("[Key]:" + Row + " [Value]:" + pciTag.get(Row));
-        }
-        
+    private static void convertLocTagDetail() {
         for(Integer Row : locTag.keySet()){ //저장된 key값 확인
         	log.info("[Key]:" + Row + " [Value]:" + locTag.get(Row));
             log.info(check.searcLeftPlusData(locTag.get(Row),2));
@@ -101,7 +82,29 @@ public class EdiFileRead {
             }
 
         }
+    }
+    private static void addRffTag(String rowLine) {
+		    rffTag.put(rffTagCnt,rowLine);
+		    rffTagCnt++;
+}
+    
+    private static void addPciTag(String rowLine) {
+    		pciTag.put(pciTagCnt,rowLine);
+    		pciTagCnt++;
+    }
+
+    private static void printHahMapDateAll() {
+    	
+        for(Integer Row : rffTag.keySet()){ //저장된 key값 확인
+            log.info("[Key]:" + Row + " [Value]:" + rffTag.get(Row));
+        }
         
+        for(Integer Row : pciTag.keySet()){ //저장된 key값 확인
+        	log.info("[Key]:" + Row + " [Value]:" + pciTag.get(Row));
+        }
+        
+ 
+        convertLocTagDetail();
         srHeaderVo = SrHeaderVo.builder().POD(POD)
         							     .POL(POL).build();
 		

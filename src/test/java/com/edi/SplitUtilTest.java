@@ -36,7 +36,6 @@ public class SplitUtilTest {
 		assertEquals("FW",check.searcLeftPlusData(input,2));
 		assertEquals(seconddata,check.searchTwoRightPlusData(input,2));
 	
-		
 	}
 	
 
