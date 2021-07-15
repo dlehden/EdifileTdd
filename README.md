@@ -1,5 +1,4 @@
 # edifileTdd
-restdocexample
 기존에 상태는 
 edi 파일이 들어오면  각각의 분리된 TAG에서 
 다이렉트로 DB에 저장을 하는 구조로 되어있다.
